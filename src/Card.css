@@ -1,0 +1,52 @@
+@import url("./variables.css");
+
+.card {
+  display: flex;
+  gap: 30px;
+  height: fit-content;
+  background-color: var(--bg-color-secundary);
+  padding: 30px;
+  border-radius: 30px;
+}
+
+.dot {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  align-self: center;
+}
+
+.dot-alive {
+  background-color: var(--green);
+}
+
+.dot-unknown {
+  background-color: var(--gray);
+}
+
+.dot-dead {
+  background-color: var(--red);
+}
+
+.name-status {
+  display: grid;
+
+  gap: 15px;
+  grid-template-columns: auto 10px;
+  grid-template-rows: auto;
+}
+
+.image {
+  border-radius: 10px;
+  width: 200px;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.orange-label {
+  color: var(--color-label);
+}

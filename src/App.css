@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import url("./variables.css");
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  font-family: "Nunito", sans-serif;
+}
+body {
+  background-color: var(--bg-color-primary);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+.container-characters {
+  padding: 30px;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
