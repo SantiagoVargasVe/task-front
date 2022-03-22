@@ -50,3 +50,8 @@
 .orange-label {
   color: var(--color-label);
 }
+@media only screen and (max-width: 600px) {
+  .image {
+    width: 150px;
+  }
+}

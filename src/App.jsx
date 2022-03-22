@@ -26,150 +26,141 @@ function App() {
     setPage(response.data.info.next);
   }, []);
 
-  const handleFilterName = (e) => {
-    const filter = e.target.value;
-    console.log("Este es el filtro del evento", filter);
-    if (filter.length < filterName.length) {
-      console.log("Este es el filtro del estado", filterName);
-      filterAll({ name: filter });
+  const handleFilter = ([input, value]) => {
+    console.log(input, value);
+    let newCharacters = [];
+    if (isDeleting([input, value])) {
+      newCharacters = allCharacters;
+      newCharacters = filterByName(
+        input == "name" ? value : filterName,
+        newCharacters
+      );
+      newCharacters = filterByEpisodes(
+        input == "episodes" ? value : filterEpisodes,
+        newCharacters
+      );
+      newCharacters = filterByOrigin(
+        input == "origin" ? value : filterOrigin,
+        newCharacters
+      );
+      newCharacters = filterBySpecies(
+        input == "species" ? value : filterSpecies,
+        newCharacters
+      );
+      newCharacters = filterByGender(
+        input == "gender" ? value : filterGender,
+        newCharacters
+      );
+      newCharacters = filterByStatus(
+        input == "status" ? value : filterStatus,
+        newCharacters
+      );
+
+      if (input == "name") {
+        setFilterName(value);
+      } else if (input == "episodes") {
+        setFilterEpisodes(value);
+      } else if (input == "origin") {
+        setFilterOrigin(value);
+      } else if (input == "species") {
+        setFilterSpecies(value);
+      } else if (input == "gender") {
+        setFilterGender(value);
+      } else if (input == "status") {
+        setFilterStatus(value);
+      }
     } else {
-      const filteredCharacters = characters.filter((character) => {
-        return character.name.toLowerCase().includes(filter.toLowerCase());
-      });
-      setCharacters(filteredCharacters);
+      if (input === "name") {
+        setFilterName(value);
+        newCharacters = filterByName(value, characters);
+      } else if (input === "episodes") {
+        setFilterEpisodes(value);
+        newCharacters = filterByEpisodes(value, characters);
+      } else if (input === "origin") {
+        setFilterOrigin(value);
+        newCharacters = filterByOrigin(value, characters);
+      } else if (input === "species") {
+        setFilterSpecies(value);
+        newCharacters = filterBySpecies(value, characters);
+      } else if (input === "gender") {
+        setFilterGender(value);
+        newCharacters = filterByGender(value, characters);
+      } else if (input === "status") {
+        setFilterStatus(value);
+        newCharacters = filterByStatus(value, characters);
+      }
     }
-    setFilterName(filter);
+    setCharacters(newCharacters);
   };
 
-  const filterAll = ({ nameFilter, episodes }) => {
-    setCharacters(allCharacters);
-    console.log(allCharacters);
-    nameFilter = nameFilter ? nameFilter : filterName;
-    let filteredCharacters = characters;
-    if (nameFilter.length > 0) {
-      console.log("filtro por nombre", nameFilter);
-      filteredCharacters = filteredCharacters.filter((character) => {
-        return character.name.toLowerCase().includes(nameFilter.toLowerCase());
-      });
-      console.log();
-      setCharacters(filteredCharacters);
+  const isDeleting = ([input, value]) => {
+    if (input === "name" && value.length < filterName.length) {
+      return true;
+    } else if (input === "episodes" && value.length < filterEpisodes.length) {
+      return true;
+    } else if (input === "origin" && value.length < filterOrigin.length) {
+      return true;
+    } else if (input === "species" && value.length < filterSpecies.length) {
+      return true;
+    } else if (input === "gender" && value.length < filterSpecies.length) {
+      return true;
+    } else if (input === "status" && value.length < filterStatus.length) {
+      return true;
     }
-    // if (filterEpisodes.length > 0) {
-    //   console.log("Estoy filtrando por episodios");
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     const numberEpisodes = character.episode.length + "";
-    //     return numberEpisodes.includes(filterEpisodes.toLowerCase());
-    //   });
-    // }
-    // if (filterOrigin.length > 0) {
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     return character.origin.name
-    //       .toLowerCase()
-    //       .includes(filterOrigin.toLowerCase());
-    //   });
-    // }
-    // if (filterSpecies.length > 0) {
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     return character.species
-    //       .toLowerCase()
-    //       .includes(filterSpecies.toLowerCase());
-    //   });
-    // }
-    // if (filterGender.length > 0) {
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     return character.character.gender
-    //       .toLowerCase()
-    //       .includes(filterGender.toLowerCase());
-    //   });
-    // }
-    // if (filterSpecies.length > 0) {
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     return character.status
-    //       .toLowerCase()
-    //       .includes(filterSpecies.toLowerCase());
-    //   });
-    // }
-    // if (filterStatus.length > 0) {
-    //   filteredCharacters = filteredCharacters.filter((character) => {
-    //     return character.status
-    //       .toLowerCase()
-    //       .includes(filterStatus.toLowerCase());
-    //   });
-    // }
   };
 
-  const handleFilterEpisodes = (e) => {
-    const filter = e.target.value;
-    const filteredCharacters = characters.filter((character) => {
-      const numberEpisodes = character.episode.length + "";
-      return numberEpisodes.includes(filter.toLowerCase());
+  const filterByName = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      return character.name.toLowerCase().includes(value.toLowerCase());
     });
-    setFilterEpisodes(filter);
-    setCharacters(filteredCharacters);
+
+    return filteredCharacters;
   };
 
-  const handleFilterOrigin = (e) => {
-    const filter = e.target.value;
-    const filteredCharacters = characters.filter((character) => {
-      return character.origin.name.toLowerCase().includes(filter.toLowerCase());
+  const filterByEpisodes = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      const episodesLength = character.episode.length + "";
+      return episodesLength.includes(value);
     });
-    setFilterOrigin(filter);
-    setCharacters(filteredCharacters);
+
+    return filteredCharacters;
   };
 
-  const handleFilterGender = (e) => {
-    const filter = e.target.value;
-    const filteredCharacters = characters.filter((character) => {
-      return character.gender.toLowerCase().includes(filter.toLowerCase());
+  const filterByOrigin = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      return character.origin.name.toLowerCase().includes(value.toLowerCase());
     });
-    setFilterGender(filter);
-    setCharacters(filteredCharacters);
+
+    return filteredCharacters;
   };
 
-  const handleFilterStatus = (e) => {
-    const filter = e.target.value;
-    const filteredCharacters = characters.filter((character) => {
-      return character.status.toLowerCase().includes(filter.toLowerCase());
+  const filterBySpecies = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      return character.species.toLowerCase().includes(value.toLowerCase());
     });
-    setFilterStatus(filter);
-    setCharacters(filteredCharacters);
+
+    return filteredCharacters;
   };
 
-  const handleFilterSpecies = (e) => {
-    const filter = e.target.value;
-    const filteredCharacters = characters.filter((character) => {
-      return character.species.toLowerCase().includes(filter.toLowerCase());
+  const filterByGender = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      return character.gender.toLowerCase().includes(value.toLowerCase());
     });
-    setFilterSpecies(filter);
-    setCharacters(filteredCharacters);
+
+    return filteredCharacters;
   };
 
-  const reFilter = () => {
-    setCharacters(allCharacters);
-    setFilterName("");
-    setFilterEpisodes("");
-    setFilterOrigin("");
-    setFilterGender("");
-    setFilterStatus("");
-    setFilterSpecies("");
+  const filterByStatus = (value, arrayCharacters) => {
+    let filteredCharacters = arrayCharacters.filter((character) => {
+      return character.status.toLowerCase().includes(value.toLowerCase());
+    });
+
+    return filteredCharacters;
   };
 
   return (
     <div className="App">
-      <Filter
-        handleFilterName={handleFilterName}
-        handleFilterEpisodes={handleFilterEpisodes}
-        handleFilterOrigin={handleFilterOrigin}
-        handleFilterGender={handleFilterGender}
-        handleFilterStatus={handleFilterStatus}
-        handleFilterSpecies={handleFilterSpecies}
-        filterName={filterName}
-        filterEpisodes={filterEpisodes}
-        filterOrigin={filterOrigin}
-        filterGender={filterGender}
-        filterStatus={filterStatus}
-        filterSpecies={filterSpecies}
-      />
+      <Filter handleFilter={handleFilter} />
       <InfiniteScroll
         dataLength={characters.length}
         className="container-characters"
